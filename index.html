@@ -63,7 +63,9 @@ input[type=search]{width:100%;max-width:320px;padding:9px 10px;border:1px solid 
 ol.refs{margin:0;padding-left:24px;display:grid;gap:7px;font-size:14px}ol.refs a{color:var(--par)}
 .list{display:grid;gap:10px}
 @media(max-width:980px){.atlas{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.bodybox{display:none}}
-@media(max-width:680px){.atlas,.tone{grid-template-columns:minmax(0,1fr)}h1{font-size:25px}}
+#drugs{word-break:keep-all;overflow-wrap:anywhere}.dhead{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:18px;align-items:center}.dhead p{margin:8px 0 0}#dstage{aspect-ratio:320/170;background:#15121E;border-radius:6px}.dgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}.drow{display:grid;grid-template-columns:130px minmax(0,1fr) minmax(0,1.2fr);gap:4px 14px;padding:10px 0;border-top:1px solid var(--line)}.drow:first-child{border-top:0}.olink{border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:3px;font:600 12px var(--body);padding:3px 7px;min-height:26px;cursor:pointer}.olink.plain{cursor:default;background:none}.dwarn{margin:0;padding-left:18px;display:grid;gap:8px}
+@media(max-width:820px){.dhead,.dgrid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:680px){.atlas,.tone{grid-template-columns:minmax(0,1fr)}h1{font-size:25px}.drow{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -104,10 +106,19 @@ ol.refs{margin:0;padding-left:24px;display:grid;gap:7px;font-size:14px}ol.refs a
     <div class="scroll"><table><thead><tr><th>기관</th><th>신경</th><th>수용체</th><th>작용</th><th>근거</th></tr></thead><tbody id="tb"></tbody></table></div>
   </section>
 
+  <section id="drugs" class="list" hidden>
+    <div class="panel"><div class="chips" id="dpick" role="group" aria-label="약물군 선택"></div></div>
+    <div class="panel dhead"><div><div class="heads"><h2 id="dname"></h2><span class="tag N" id="den"></span></div><p id="dmech"></p><p class="note" id="dkey"></p></div><div><canvas id="dstage" role="img"></canvas><p class="small mute" id="dcap" style="margin:6px 0 0"></p></div></div>
+    <div class="panel"><h3 style="margin-bottom:4px">종류와 대표 약물</h3><div id="dsub"></div></div>
+    <div class="dgrid"><div class="panel"><h3 style="margin-bottom:4px">작용</h3><div id="dact"></div></div><div class="panel"><h3 style="margin-bottom:4px">부작용</h3><div id="dae"></div></div></div>
+    <div class="panel"><h3 style="margin-bottom:8px">주의할 상황</h3><ul class="dwarn" id="dwarn"></ul></div>
+    <p class="small mute">학습용 요약이며 용량은 넣지 않았습니다. 미국 FDA 허가사항과 문헌을 기준으로 정리해 국내 허가사항과 다를 수 있습니다. 실제 복용이나 변경은 의사, 약사와 상의해야 합니다.</p>
+  </section>
+
   <section id="review" class="panel quiz" hidden></section>
 
   <section id="evidence" class="list" hidden>
-    <div class="panel list"><h2>근거 문헌</h2><p class="small mute">전문: 본문에서 해당 내용 확인. 초록: 초록에서 확인. 교재: 공개 교재 또는 표준 지식이며 이번에 1차 문헌 본문까지 확인하지는 못했습니다.</p><ol class="refs" id="refs"></ol></div>
+    <div class="panel list"><h2>근거 문헌</h2><p class="small mute">전문: 본문에서 해당 내용 확인. 초록: 초록에서 확인. 교재: 공개 교재 또는 표준 지식이며 이번에 1차 문헌 본문까지 확인하지는 못했습니다. 허가사항: 미국 FDA 허가사항 본문에서 확인.</p><ol class="refs" id="refs"></ol></div>
   </section>
 </div>
 
@@ -148,6 +159,42 @@ weh:["Wehrwein EA, et al. Overview of the autonomic nervous system. Compr Physio
 esp:["Espinosa-Medina I, et al. The sacral autonomic outflow is sympathetic. Science 2016;354:893-7","27856909","초록"],
 hor:["Horn JP. The sacral autonomic outflow is parasympathetic. Clin Auton Res 2018;28:181-5","29453697","초록"],
 sp:["StatPearls. Autonomic Pharmacology. NCBI Bookshelf NBK538180","","교재"]};
+/*DRUG_REFS*/
+R.cou=["Coupland CAC, et al. Anticholinergic drug exposure and the risk of dementia. JAMA Intern Med 2019;179:1084-93","31233095","초록"];
+R.bus=["Busse WW, et al. Combined analysis of asthma safety trials of long-acting β2-agonists. N Engl J Med 2018;378:2497-505","29949492","초록"];
+R.sal=["Salpeter S, et al. Cardioselective beta-blockers for chronic obstructive pulmonary disease. Cochrane Database Syst Rev 2005;CD003566","16235327","초록"];
+R.sic=["Sica DA. Alpha1-adrenergic blockers: current usage considerations. J Clin Hypertens 2005;7:757-62","16330901","초록"];
+R.f_atro=["미국 FDA 허가사항: Atropine sulfate injection (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=0060b971-19bd-2849-e063-6294a90afca8"];
+R.f_scop=["미국 FDA 허가사항: Scopolamine transdermal system (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=163accb7-45e6-4d97-844d-72b606677008"];
+R.f_dicy=["미국 FDA 허가사항: Dicyclomine hydrochloride capsules (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=01413a77-48f8-1a8a-e063-6394a90ae494"];
+R.f_oxyb=["미국 FDA 허가사항: Oxybutynin chloride extended-release tablets (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=02ff3be7-fc5c-4b91-8c67-ecdf6e19c42a"];
+R.f_soli=["미국 FDA 허가사항: Solifenacin succinate tablets (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=010c0657-c907-477f-8bd7-5d455a5f50eb"];
+R.f_tiot=["미국 FDA 허가사항: Tiotropium bromide inhalation powder (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=496b38ee-45b6-4bb2-a35e-9023c3b73719"];
+R.f_trop=["미국 FDA 허가사항: Tropicamide ophthalmic solution (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=0104ffe4-013d-4afa-996d-dcba4f08e93d"];
+R.f_phen=["미국 FDA 허가사항: Phenylephrine hydrochloride injection (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=0930ec92-5654-078f-e063-6294a90aad02"];
+R.f_mido=["미국 FDA 허가사항: Midodrine hydrochloride tablets (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=03b54024-2a26-4abe-bd8b-b66bb6781fa7"];
+R.f_oxym=["미국 FDA 허가사항: Oxymetazoline nasal spray (OTC) (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=020942b1-59d4-a19d-e063-6394a90a5d87"];
+R.f_pseu=["미국 FDA 허가사항: Pseudoephedrine hydrochloride (OTC) (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=00a8327b-41f0-4498-ad13-331256b539f9"];
+R.f_clon=["미국 FDA 허가사항: Clonidine hydrochloride tablets (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=00c6d67a-bb11-4884-9eeb-4e1b8701a08b"];
+R.f_dexm=["미국 FDA 허가사항: Dexmedetomidine injection (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=0d2710f2-ee47-4114-ab5c-8dca74cdcb8d"];
+R.f_brim=["미국 FDA 허가사항: Brimonidine tartrate ophthalmic solution (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=146be56d-ba0f-448a-b3b1-61a16c59ae4b"];
+R.f_doxa=["미국 FDA 허가사항: Doxazosin tablets (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=08521333-ff21-45ad-b99e-1f43d945d24d"];
+R.f_tams=["미국 FDA 허가사항: Tamsulosin hydrochloride capsules (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=00097e78-9c04-4e62-8260-ddb50e9a6a93"];
+R.f_silo=["미국 FDA 허가사항: Silodosin capsules (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=2300db48-477f-4357-8de9-f723737071b4"];
+R.f_albu=["미국 FDA 허가사항: Albuterol sulfate HFA inhalation aerosol (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=04c8a345-0a0d-5a01-e063-6294a90a40d2"];
+R.f_salm=["미국 FDA 허가사항: Serevent Diskus (salmeterol) (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=12d9728e-6b5c-4aee-bfb0-745e542ed2e4"];
+R.f_dobu=["미국 FDA 허가사항: Dobutamine in dextrose injection (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=3418aa46-2d9a-39f3-e063-6294a90a2961"];
+R.f_mira=["미국 FDA 허가사항: Mirabegron extended-release tablets (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=00826723-d25e-498a-b8d4-d17e5c14dda5"];
+R.f_prop=["미국 FDA 허가사항: Propranolol hydrochloride tablets (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=013a485a-4227-46ae-b19f-c550302fcb96"];
+R.f_meto=["미국 FDA 허가사항: Metoprolol tartrate tablets (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=00940cc5-d2eb-4841-9138-de97d7b1c674"];
+R.f_aten=["미국 FDA 허가사항: Atenolol tablets (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=09b21985-1818-449d-9b29-98f733cf7b9f"];
+R.f_biso=["미국 FDA 허가사항: Bisoprolol fumarate tablets (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=084308e4-3b8b-40d6-acbf-d775772a8a73"];
+R.f_carv=["미국 FDA 허가사항: Carvedilol tablets (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=010290af-81f4-0037-e063-6394a90a4638"];
+R.f_labe=["미국 FDA 허가사항: Labetalol hydrochloride tablets (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=04f9dcdf-4023-48ee-9e7d-ca9366d9db72"];
+R.f_nebi=["미국 FDA 허가사항: Nebivolol tablets (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=04a64dad-6922-4737-ab46-98c185782b38"];
+R.f_timo=["미국 FDA 허가사항: Dorzolamide and timolol ophthalmic solution (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=02d89d37-cbca-4e06-83ef-2a10f988f1ea"];
+R.f_esmo=["미국 FDA 허가사항: Esmolol hydrochloride injection (DailyMed, 2026년 11월 확인)","","허가사항","https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=017023a9-00f0-4284-861f-a3634d4fdb17"];
+/*END_DRUG_REFS*/
 const refKeys=Object.keys(R);
 const cite=a=>a.map(k=>`<a href="#evidence" data-ref="${k}">${refKeys.indexOf(k)+1}</a>`).join(",");
 
@@ -290,9 +337,9 @@ for(const k of Object.keys(D)){const f=D[k];D[k]=(c,d,dt)=>{stageBg(c);c.lineCap
 let stage=$("#stage"),pathC=$("#path");
 function drawStage(dt){const c=fit(stage,320,230),d=drives();D[st.o](c,d,dt)}
 function drawPath(dt){tick("pw",.28,dt);const c=fit(pathC,640,300),rows=[["부교감",C.par,"ACh","M","심장·기관지·소화관"],["교감",C.sym,"NE","α, β","대부분의 표적"],["교감(땀샘)",C.sym,"ACh","M3","에크린 땀샘"],["교감(부신)",C.sym,"Epi, NE","혈액","전신 수용체"]];rows.forEach((r,i)=>{const y=42+i*70,gx=i===3?380:(i===0?360:210);lab(c,r[0],8,y+4,r[1],"left");line(c,[[92,y],[gx-14,y]],r[1],3);circ(c,gx,y,13,C.soft,r[1]);lab(c,"Nn",gx,y+4,C.ink);lab(c,"ACh",(92+gx)/2,y-9);line(c,[[gx+14,y],[535,y]],r[1],i===3?6:2);c.fillStyle=C.tissue;c.fillRect(535,y-16,92,32);lab(c,r[3],581,y+4,C.ink);lab(c,r[4],581,y+29);lab(c,r[2],(gx+535)/2,y-9,r[1]);dots(3,A("pw")+i*.13,u=>circ(c,lerp(92,gx-14,u),y,3,C.ink));dots(4,A("pw")+i*.2,u=>circ(c,lerp(gx+14,533,u),y,3,r[1]))})}
-function paint(){if(!$("#atlas").hidden)drawStage(0);if(!$("#pathway").hidden)drawPath(0)}
+function paint(){if(!$("#atlas").hidden)drawStage(0);if(!$("#pathway").hidden)drawPath(0);if(!$("#drugs").hidden)drawDrug(0)}
 let last=0;const still=matchMedia("(prefers-reduced-motion: reduce)");
-function loop(t){const dt=Math.min(.05,(t-last)/1000||0);last=t;if(!st.pause&&!still.matches){if(!$("#atlas").hidden)drawStage(dt);if(!$("#pathway").hidden)drawPath(dt)}requestAnimationFrame(loop)}
+function loop(t){const dt=Math.min(.05,(t-last)/1000||0);last=t;if(!st.pause&&!still.matches){if(!$("#atlas").hidden)drawStage(dt);if(!$("#pathway").hidden)drawPath(dt)}if(!still.matches&&!$("#drugs").hidden)drawDrug(dt);requestAnimationFrame(loop)}
 
 function renderTone(){$("#s").value=Math.round(st.S*100);$("#p").value=Math.round(st.P*100);$("#so").textContent=Math.round(st.S*100)+"%";$("#po").textContent=Math.round(st.P*100)+"%";$$("#scen button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===st.sc));$("#scenNote").textContent=st.sc?SC[st.sc][3]:"직접 조절한 상태입니다. 두 신경은 항상 반대로만 움직이지 않습니다.";meters()}
 function meters(){const d=drives();$("#meters").innerHTML=O[st.o].m(d).map(([l,v,t])=>`<div class="meter"><span>${l}</span><div><div class="bar"><i style="width:${Math.round(clamp(v)*100)}%"></i></div>${t?`<span class="small mute">${t}</span>`:""}</div></div>`).join("")}
@@ -376,14 +423,60 @@ const newDeck=()=>mixUp(Q).map(q=>{const o=mixUp(q[1]);return{t:q[0],o,a:o.index
 let deck=newDeck(),qi=0,score=0;
 function renderQuiz(){const el=$("#review");if(qi>=deck.length){el.innerHTML=`<h2>복습 완료</h2><p>${deck.length}문제 중 ${score}개를 맞혔습니다.</p><button class="chip" id="again">다시 풀기</button>`;$("#again").onclick=()=>{deck=newDeck();qi=0;score=0;renderQuiz()};return}const q=deck[qi];el.innerHTML=`<p class="small mute">문제 ${qi+1} / ${deck.length} · 맞힌 문제 ${score}</p><h2>${q.t}</h2><div class="opts">${q.o.map((t,i)=>`<button class="opt" data-a="${i}">${t}</button>`).join("")}</div><p id="fb" aria-live="polite"></p>`;el.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const a=+b.dataset.a,ok=a===q.a;if(ok)score++;el.querySelectorAll(".opt").forEach((x,i)=>{x.disabled=true;if(i===q.a)x.classList.add("ok");else if(i===a)x.classList.add("no")});$("#fb").innerHTML=`${ok?"정답입니다.":"다시 볼 내용입니다."} ${q.why}<sup>${cite(q.c)}</sup> <button class="chip" id="next">${qi+1<deck.length?"다음":"결과 보기"}</button>`;$("#next").onclick=()=>{qi++;renderQuiz()}})}
 
-$("#refs").innerHTML=refKeys.map(k=>{const r=R[k],u=r[1]?`https://pubmed.ncbi.nlm.nih.gov/${r[1]}/`:"https://www.ncbi.nlm.nih.gov/books/NBK538180/";return `<li id="ref-${k}"><a href="${u}" target="_blank" rel="noopener">${r[0]}</a> <span class="tag N">${r[2]}</span></li>`}).join("");
+$("#refs").innerHTML=refKeys.map(k=>{const r=R[k],u=r[3]||(r[1]?`https://pubmed.ncbi.nlm.nih.gov/${r[1]}/`:"https://www.ncbi.nlm.nih.gov/books/NBK538180/");return `<li id="ref-${k}"><a href="${u}" target="_blank" rel="noopener">${r[0]}</a> <span class="tag N">${r[2]}</span></li>`}).join("");
 $("#x1").innerHTML=cite(["baker"]);$("#x2").innerHTML=cite(["car"]);$("#x3").innerHTML=cite(["esp","hor"]);$("#x4").innerHTML=cite(["alb","car"]);
 
-const T=[["atlas","기관 탐색"],["pathway","신호 경로"],["summary","총정리 표"],["review","복습"],["evidence","근거"]];
+/*DRUGS*/
+// 약물군: 용량 정보는 넣지 않습니다. [구분, 약물, 용도, 근거] / [기관, 기관키, 수용체, 효과, 근거] / [기관, 기관키, 증상, 이유, 근거] / [주의, 근거]
+const DR={
+anti:{n:"항콜린제",en:"Anticholinergics",mode:"block",lig:"ACh",rec:"M",pal:"ven",
+mech:"ACh가 무스카린 수용체(M)에 붙지 못하게 막습니다. 부교감 신호와 땀샘의 콜린성 신호가 함께 약해집니다.",c:["f_atro","f_scop"],
+key:"치료 효과와 부작용의 뿌리가 같습니다. 방광을 겨냥한 약이어도 침샘, 눈, 장의 M 수용체까지 막히면 구강건조, 시야 흐림, 변비로 나타납니다.",kc:["f_oxyb","f_soli"],
+sub:[["전신 작용","아트로핀","침 분비 억제, 미주신경 작용 차단",["f_atro"]],["멀미·구역","스코폴라민 패치","멀미, 수술 후 구역·구토 예방",["f_scop"]],["장 경련","디시클로민","과민성 장증후군",["f_dicy"]],["과민성 방광","옥시부티닌, 솔리페나신","절박뇨, 빈뇨, 절박성 요실금",["f_oxyb","f_soli"]],["흡입","티오트로피움","COPD 기관지수축의 유지 치료",["f_tiot"]],["점안","트로피카미드","검사를 위한 산동과 조절마비",["f_trop"]]],
+act:[["방광","bladder","M","방광 평활근의 무스카린 자극을 막아 절박뇨와 빈뇨 완화",["f_oxyb","f_soli"]],["기관지","lung","M3","평활근 수축을 막아 기관지 확장",["f_tiot"]],["위장관","gut","M","평활근 경련 완화",["f_dicy"]],["눈","eye","M","동공조임근과 모양체근을 막아 산동과 조절마비",["f_trop"]],["침샘","salivary","M","침 분비 감소",["f_atro"]],["심장","heart","M2","미주신경의 심박수 감소 효과 차단",["f_atro","sp"]],["뇌","cns","M","멀미에 따른 구역·구토 예방",["f_scop"]]],
+ae:[["침샘","salivary","구강건조","침 분비 신호 감소",["f_atro","f_tiot","f_soli"]],["눈","eye","시야 흐림, 눈부심, 안압 상승","산동과 조절마비",["f_atro","f_trop"]],["심장","heart","빈맥, 두근거림","미주신경 제동 감소",["f_atro","f_dicy"]],["위장관","gut","변비","장운동 감소",["f_atro","f_soli"]],["방광","bladder","배뇨곤란, 요저류","배뇨근 수축 약화",["f_atro","f_tiot"]],["땀샘","sweat","땀 감소, 더위 불내성, 고체온","콜린성 땀 분비 억제",["f_atro","f_dicy","f_scop"]],["뇌","cns","졸림, 혼돈, 환각, 섬망","중추 작용",["f_scop","f_dicy"]]],
+warn:[["좁은각 녹내장: 스코폴라민 패치는 폐쇄각 녹내장에, 옥시부티닌과 솔리페나신은 조절되지 않는 좁은각 녹내장에 금기입니다.",["f_scop","f_oxyb","f_soli"]],["요저류와 위 정체가 있으면 옥시부티닌과 솔리페나신을 쓰지 않습니다.",["f_oxyb","f_soli"]],["전립선비대나 방광 출구 폐쇄가 있으면 흡입제도 요저류를 악화시킬 수 있습니다.",["f_tiot"]],["더운 환경에서는 땀이 줄어 열탈진과 열사병 위험이 커집니다.",["f_dicy","f_scop"]],["고령자 등 민감한 사람에게서 정신병적 증상과 섬망이 보고되었습니다.",["f_dicy"]],["영국의 대규모 환자대조 연구에서 항콜린제 누적 노출이 많을수록 치매 위험이 높았습니다(최고 노출군 보정 OR 1.49). 관찰연구라 인과관계를 증명하지는 않습니다.",["cou"]]]},
+aago:{n:"알파효능제",en:"Alpha agonists",mode:"agon",lig:"약",rec:"α",pal:"gold",
+mech:"α 수용체를 직접 자극합니다. 말초 α1은 혈관을 수축시키고, 중추 α2는 교감신경 출력을 낮춥니다.",c:["f_phen","f_clon"],
+key:"이름은 같아도 방향이 다릅니다. 말초 α1 약은 혈압을 올리고, 중추 α2 약은 혈압을 내립니다.",kc:["f_mido","f_clon"],
+sub:[["α1, 혈압 유지","페닐에프린 주사","마취 중 혈관 확장에 따른 저혈압",["f_phen"]],["α1, 경구","미도드린","증상이 있는 기립성 저혈압",["f_mido"]],["코막힘","옥시메타졸린 점비제, 슈도에페드린","감기와 비염의 코막힘. 슈도에페드린은 직접·간접 혼합 작용",["f_oxym","f_pseu","lacc"]],["중추 α2","클로니딘, 덱스메데토미딘","고혈압 / 중환자와 시술 중 진정",["f_clon","f_dexm"]],["점안 α2","브리모니딘","녹내장과 고안압의 안압 강하",["f_brim"]]],
+act:[["혈관","vessel","α1","혈관 수축으로 혈압 상승",["f_phen","f_mido"]],["코","nose","α","점막 혈관 수축으로 코막힘 완화",["lacc","sarin","f_oxym"]],["뇌","cns","α2","교감 출력 감소로 말초저항, 심박수, 혈압 저하",["f_clon"]],["뇌","cns","α2","진정",["f_dexm"]],["눈","eye","α2","방수 생성 감소와 포도막공막 유출 증가로 안압 저하",["f_brim"]]],
+ae:[["혈관","vessel","누운 자세 고혈압","말초 혈관 수축",["f_mido"]],["심장","heart","반사 서맥, 심박출량 감소","혈압 상승 뒤 미주신경 활성 증가",["f_phen"]],["피부","","소름, 두피 가려움과 저림","미도드린",["f_mido"]],["방광","bladder","요저류, 절박뇨, 빈뇨","미도드린",["f_mido"]],["코","nose","반복 사용 시 코막힘 재발·악화, 따가움","점비제",["f_oxym"]],["뇌","cns","신경과민, 어지러움, 불면","슈도에페드린",["f_pseu"]],["침샘·뇌","cns","구강건조, 졸림, 어지러움, 변비","클로니딘",["f_clon"]],["심장","heart","저혈압, 서맥, 동정지","덱스메데토미딘",["f_dexm"]],["눈","eye","결막 충혈, 가려움, 알레르기 결막염","브리모니딘",["f_brim"]],["신장","kidney","패혈성 쇼크에서 신대체요법 필요 증가","페닐에프린 주사",["f_phen"]],["피부","","혈관 밖 유출 시 조직 괴사","페닐에프린 주사",["f_phen"]]],
+warn:[["클로니딘을 갑자기 끊으면 불안, 두통, 떨림과 함께 혈압이 빠르게 오를 수 있습니다.",["f_clon"]],["미도드린은 심한 기질성 심장병, 급성 신장병, 요저류, 갈색세포종, 갑상샘중독증, 지속되는 누운 자세 고혈압에 쓰지 않습니다.",["f_mido"]],["슈도에페드린은 MAO 억제제 복용 중이거나 끊은 지 2주 이내이면 쓰지 않습니다. 심장병, 고혈압, 갑상샘 질환, 당뇨, 전립선비대가 있으면 먼저 상담합니다.",["f_pseu"]],["페닐에프린 주사는 협심증과 심부전을 악화시킬 수 있습니다.",["f_phen"]],["브리모니딘은 2세 미만에 금기입니다. 영아에서 무호흡, 혼수, 저혈압, 호흡억제가 보고되었습니다.",["f_brim"]],["옥시메타졸린 점비제는 3일을 넘겨 쓰지 말라고 표시되어 있습니다.",["f_oxym"]]]},
+abk:{n:"알파차단제",en:"Alpha blockers",mode:"block",lig:"NE",rec:"α1",pal:"art",
+mech:"NE와 Epi가 α 수용체에 작용하지 못하게 막습니다. 혈관, 전립선, 방광목의 평활근 긴장이 풀립니다.",c:["f_doxa","f_tams"],
+key:"혈압을 낮추는 작용이 일어설 때는 기립성 저혈압으로 나타납니다. 전립선비대증에 쓰는 약에도 같은 경고가 있습니다.",kc:["f_doxa","f_tams","f_silo"],
+sub:[["α1 선택","독사조신","고혈압, 전립선비대증",["f_doxa"]],["전립선비대증","탐스로신, 실로도신","배뇨 증상 치료. 고혈압 치료제가 아님",["f_tams","f_silo"]]],
+act:[["혈관","vessel","α1","말초저항 감소로 혈압 저하",["f_doxa","sic"]],["방광목·전립선","bladder","α1","평활근 이완과 요도 저항 감소로 배뇨 증상 완화",["f_doxa","f_tams","f_silo"]]],
+ae:[["혈관","vessel","기립성 저혈압, 어지러움, 실신","특히 첫 투여와 증량 때",["f_doxa","f_silo","sic"]],["심장","heart","두근거림, 드물게 빈맥","",["f_doxa","f_tams"]],["사정","","역행사정, 사정 이상","실로도신 시험에서 28.1%, 위약 0.9%",["f_silo","f_tams"]],["코","nose","코막힘, 비염","점막 혈관 확장",["f_silo","f_tams","f_doxa"]],["눈","eye","백내장 수술 중 홍채 이완 증후군(IFIS)","수술 합병증과 연결",["f_doxa","f_tams","f_silo"]],["음경","","지속발기증","드물지만 응급",["f_doxa","f_tams"]],["뇌","cns","두통, 졸림, 피로","",["f_doxa","f_tams","sic"]]],
+warn:[["첫 투여와 증량 직후에는 실신으로 다칠 수 있는 상황을 피합니다.",["f_doxa"]],["PDE-5 억제제와 함께 쓰면 혈압이 더 내려갈 수 있습니다.",["f_doxa"]],["백내장이나 녹내장 수술 전에는 복용 사실을 안과에 알립니다.",["f_tams"]],["전립선비대증 치료 전에는 전립선암을 배제합니다.",["f_doxa","f_tams","f_silo"]],["실로도신은 강한 CYP3A4 억제제 병용, 중증 신장애, 중증 간장애에 금기입니다.",["f_silo"]]]},
+bago:{n:"베타효능제",en:"Beta agonists",mode:"agon",lig:"약",rec:"β",pal:"gold",
+mech:"β 수용체를 직접 자극합니다. 겨냥하는 아형에 따라 표적이 심장(β1), 기관지(β2), 방광(β3)으로 갈립니다.",c:["f_dobu","f_albu","f_mira"],
+key:"β2 선택약도 심장과 전신에 영향을 줍니다. 그래서 두근거림, 떨림, 저칼륨혈증이 함께 나타날 수 있습니다.",kc:["f_albu"],
+sub:[["β1 중심, 주사","도부타민","심장 수축력 저하에 따른 보상부전의 단기 지원",["f_dobu"]],["β2, 속효성","살부타몰(알부테롤)","가역적 기관지수축의 치료와 예방",["f_albu"]],["β2, 지속성","살메테롤","천식에는 흡입 스테로이드와 병용, 운동유발 기관지수축 예방",["f_salm"]],["β3","미라베그론","과민성 방광",["f_mira"]]],
+act:[["심장","heart","β1","심장 수축력 증가",["f_dobu"]],["기관지","lung","β2","평활근 이완, 기관지 확장",["f_albu","f_salm"]],["방광","bladder","β3","저장기에 배뇨근 이완, 방광 용량 증가",["f_mira"]]],
+ae:[["심장","heart","빈맥, 두근거림, 부정맥","심장 β 자극",["f_albu","f_dobu"]],["혈관","vessel","혈압 상승","도부타민, 미라베그론",["f_dobu","f_mira"]],["근육","","떨림, 근육 경련","β 자극의 전신 작용",["f_albu"]],["뇌","cns","불면, 두통","중추 자극",["f_albu"]],["전해질","","저칼륨혈증","칼륨이 세포 안으로 이동",["f_albu"]],["혈당","liver","혈당 변화","",["f_albu"]],["기관지","lung","역설적 기관지수축","생명을 위협할 수 있음",["f_albu"]],["방광","bladder","요저류","미라베그론",["f_mira"]],["얼굴·후두","","혈관부종","미라베그론",["f_mira"]]],
+warn:[["지속성 β2 효능제를 흡입 스테로이드 없이 천식에 단독으로 쓰면 천식 관련 사망 위험이 늘어납니다.",["f_salm"]],["대규모 통합 분석에서 지속성 β2 효능제와 흡입 스테로이드 병용은 스테로이드 단독보다 중대한 천식 사건을 유의하게 늘리지 않았고 악화는 줄였습니다.",["bus"]],["살메테롤은 급성 증상을 가라앉히는 약으로 쓰지 않습니다.",["f_salm"]],["도부타민은 특발성 비후성 대동맥판하 협착증에 금기입니다.",["f_dobu"]],["미라베그론은 조절되지 않는 중증 고혈압에 권장되지 않고, CYP2D6을 억제해 메토프롤롤 등의 노출을 늘립니다.",["f_mira"]],["방광 출구 폐쇄가 있거나 항무스카린제를 함께 쓰면 요저류를 더 살핍니다.",["f_mira"]]]},
+bbk:{n:"베타차단제",en:"Beta blockers",mode:"block",lig:"NE",rec:"β",pal:"art",
+mech:"NE와 Epi가 β 수용체에 작용하지 못하게 막습니다. 심박수, 심박출량, 레닌 분비가 줄어듭니다.",c:["f_prop","f_biso"],
+key:"β1 선택성은 절대적이지 않습니다. 혈중 농도가 높아지면 기관지의 β2까지 막힐 수 있습니다.",kc:["f_meto"],
+sub:[["비선택 β","프로프라놀롤, 티몰롤 점안제","고혈압 등 / 안압 강하",["f_prop","f_timo"]],["β1 선택","메토프롤롤, 아테놀롤, 비소프롤롤, 네비볼롤","고혈압 등",["f_meto","f_aten","f_biso","f_nebi"]],["β1 선택, 초단시간","에스몰롤 주사","상심실성 빈맥의 심실 박동수 단기 조절",["f_esmo"]],["α1 + β","카르베딜롤, 라베탈롤","심부전, 심근경색 후 좌심실 기능저하, 고혈압 / 고혈압",["f_carv","f_labe"]]],
+act:[["심장","heart","β1","심박수, 수축력, 심박출량 감소",["f_meto","f_prop"]],["신장","kidney","β1","레닌 분비 억제",["f_prop","f_biso","f_nebi"]],["혈관","vessel","α1","카르베딜롤과 라베탈롤은 α1도 막아 혈압을 더 낮춤",["f_carv","f_labe"]],["눈","eye","β","방수 분비 감소로 안압 저하",["f_timo"]]],
+ae:[["심장","heart","서맥, 방실차단, 저혈압","심장 β1 차단",["f_meto","f_carv","f_esmo"]],["심장","heart","심부전 악화","수축력 감소",["f_meto","f_carv"]],["기관지","lung","기관지수축","β2 차단",["f_prop","f_meto","f_timo"]],["혈당","","저혈당의 빈맥 신호가 가려짐","당뇨 환자에서 중요",["f_aten","f_biso","f_nebi"]],["손발","vessel","손발 차가움, 말초혈관 질환 악화","",["f_aten","f_biso","f_nebi"]],["뇌","cns","피로, 어지러움, 수면장애, 생생한 꿈","",["f_meto","f_biso","f_prop"]],["성기능","","성욕 저하, 발기부전","",["f_biso"]],["혈관","vessel","기립성 저혈압","α1 차단을 겸한 약",["f_carv"]],["간","liver","드문 중증 간세포 손상","라베탈롤",["f_labe"]],["두피","","일시적 두피 저림","라베탈롤",["f_labe"]]],
+warn:[["갑자기 끊으면 협심증 악화, 심근경색, 심실부정맥이 생길 수 있습니다.",["f_prop","f_biso","f_carv","f_nebi"]],["심한 서맥, 2·3도 방실차단, 심인성 쇼크, 비대상성 심부전에는 쓰지 않습니다.",["f_meto","f_carv","f_nebi"]],["프로프라놀롤, 카르베딜롤, 라베탈롤, 티몰롤 점안제는 천식에 금기입니다.",["f_prop","f_carv","f_labe","f_timo"]],["β1 선택약은 다른 치료가 어려울 때 기관지 질환에서도 주의해 쓸 수 있습니다. Cochrane 분석의 COPD 환자에서는 FEV1과 호흡기 증상이 변하지 않았습니다.",["f_meto","sal"]],["갑상샘중독증의 빈맥을 가릴 수 있고, 갑자기 끊으면 갑상샘 폭풍을 부를 수 있습니다.",["f_biso","f_nebi"]],["점안제도 전신 부작용을 일으킬 수 있습니다. 천식 환자의 기관지수축 사망과 심부전 관련 사망이 보고되었습니다.",["f_timo"]]]}};
+const drugC=$("#dstage");st.d="anti";
+const sup=a=>a&&a.length?`<sup>${cite(a)}</sup>`:"";
+const org=(n,k)=>k?`<button class="olink" data-o="${k}" title="기관 탐색에서 ${O[k].n} 보기">${n}</button>`:`<span class="olink plain">${n}</span>`;
+$("#dpick").innerHTML=Object.entries(DR).map(([k,d])=>`<button class="chip" data-d="${k}" aria-pressed="false">${d.n}</button>`).join("");
+function renderDrug(){const d=DR[st.d];$$("#dpick [data-d]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.d===st.d));$("#dname").textContent=d.n;$("#den").textContent=d.en;$("#dmech").innerHTML=d.mech+sup(d.c);$("#dkey").innerHTML=d.key+sup(d.kc);drugC.setAttribute("aria-label",d.mode==="block"?`${d.n}가 ${d.rec} 수용체 자리를 차지해 ${d.lig}가 붙지 못하는 애니메이션`:`${d.n}가 ${d.rec} 수용체를 자극하는 애니메이션`);$("#dcap").textContent=d.mode==="block"?`차단제: 약이 ${d.rec} 수용체 자리를 차지해 ${d.lig}의 신호가 들어오지 못합니다.`:`효능제: 약이 ${d.rec} 수용체에 붙어 세포 신호를 직접 켭니다.`;$("#dsub").innerHTML=d.sub.map(s=>`<div class="drow"><b>${s[0]}</b><span>${s[1]}</span><span class="mute">${s[2]}${sup(s[3])}</span></div>`).join("");$("#dact").innerHTML=d.act.map(a=>`<div class="rule"><div class="heads">${org(a[0],a[1])}<b style="font-family:var(--mono);font-size:13px">${a[2]}</b></div><span>${a[3]}${sup(a[4])}</span></div>`).join("");$("#dae").innerHTML=d.ae.map(a=>`<div class="rule"><div class="heads">${org(a[0],a[1])}</div><span><b>${a[2]}</b>${a[3]?` <span class="mute">${a[3]}</span>`:""}${sup(a[4])}</span></div>`).join("");$("#dwarn").innerHTML=d.warn.map(w=>`<li>${w[0]}${sup(w[1])}</li>`).join("");drawDrug(0)}
+$("#drugs").addEventListener("click",e=>{const p=e.target.closest("[data-d]");if(p){st.d=p.dataset.d;renderDrug();return}if(e.target.closest("[data-o]")){show("atlas");scrollTo({top:0})}});
+function drawDrug(dt){tick("dg",.26,dt);const d=DR[st.d],c=fit(drugC,320,170),t=A("dg"),blk=d.mode==="block",my=104,cx=160,n=6,pal=PAL[d.pal],pos=(a,b,u)=>[lerp(a[0],b[0],u),lerp(a[1],b[1],u)],ease=u=>u*u*(3-2*u);c.fillStyle="rgba(147,171,255,.07)";c.fillRect(0,my+9,320,61);for(let x=0;x<324;x+=8){if(Math.abs(x-cx)<22)continue;line(c,[[x,my-3],[x,my+3]],"rgba(229,198,118,.38)",1.4);circ(c,x,my-6,3.1,"#E5C676");circ(c,x,my+6,3.1,"#E5C676")}const beat=.5+.5*Math.sin(t*TAU*2.4),rc=blk?"#77718C":mix("#8A78B8","#FFD27A",.2+.5*beat);line(c,[[cx-14,my+20],[cx-14,my-14],[cx-20,my-25]],rc,8);line(c,[[cx+14,my+20],[cx+14,my-14],[cx+20,my-25]],rc,8);line(c,[[cx-14,my+20],[cx+14,my+20]],rc,8);for(let i=0;i<n;i++){const u=(t+i/n)%1,s=[28+i*53,-8];let p,al=1;if(blk){const near=[cx+(i%2?-30:30),my-40],out=[i%2?24:296,my-34];p=u<.58?pos(s,near,ease(u/.58)):pos(near,out,ease((u-.58)/.42));al=u>.86?(1-u)/.14:1}else{const seat=[cx,my-13];p=u<.68?pos(s,seat,ease(u/.68)):seat;al=u>.68?clamp(1-(u-.68)/.32):1}c.save();c.globalAlpha=clamp(al);ball(c,p[0],p[1],blk?5.5:6.5,pal,.7);c.restore()}if(blk){ball(c,cx,my-13,11.5,PAL.gold,.7);lab(c,"약",cx,my-9,"#3D2B08")}else for(let j=0;j<3;j++){const v=(t*2+j/3)%1;c.strokeStyle=rgba(SUG,.55*(1-v));c.lineWidth=2;c.beginPath();c.arc(cx,my+27,8+v*24,.15*Math.PI,.85*Math.PI);c.stroke()}lab(c,"세포 밖",8,16,DIM,"left");lab(c,"세포 안",8,my+62,DIM,"left");lab(c,`${d.rec} 수용체`,cx+27,my+24,INK,"left");lab(c,blk?d.lig:"약",blk?44:40,34,INK,"left");lab(c,blk?"신호 감소":"신호 켜짐",312,my+62,blk?DIM:SUG,"right")}
+/*END_DRUGS*/
+const T=[["atlas","기관 탐색"],["pathway","신호 경로"],["summary","총정리 표"],["drugs","약물"],["review","복습"],["evidence","근거"]];
 $("#tabs").innerHTML=T.map(([k,n])=>`<button role="tab" data-t="${k}">${n}</button>`).join("");
 function show(k){if(!T.some(t=>t[0]===k))k="atlas";T.forEach(([t])=>$("#"+t).hidden=t!==k);$$("[data-t]").forEach(b=>b.setAttribute("aria-selected",b.dataset.t===k));try{history.replaceState(null,"","#"+k)}catch(e){}requestAnimationFrame(paint)}
 $("#tabs").onclick=e=>{const b=e.target.closest("[data-t]");if(b)show(b.dataset.t)};addEventListener("hashchange",()=>show(location.hash.slice(1)));addEventListener("resize",paint);
-renderTable();renderQuiz();renderTone();renderOrgan();show(location.hash.slice(1)||"atlas");requestAnimationFrame(loop);
+renderTable();renderQuiz();renderTone();renderOrgan();renderDrug();show(location.hash.slice(1)||"atlas");requestAnimationFrame(loop);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(paint);
 </script>
 </body>
